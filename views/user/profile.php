@@ -629,7 +629,8 @@ $this->registerJs($js, \yii\web\View::POS_END);
                                     <? foreach ($novosti as $novost): ?>
 
                                     <div class="mini-news-item">
-                                        <span class="mini-news-item__date"><?= strftime('%d %B %Y', strtotime($novost->date)); ?></span>
+                                        <span class="mini-news-item__date"><?= Yii::$app->formatter->asDate($novost->date);/*strftime('%d %B %Y', strtotime($novost->date));*/ ?></span>
+
                                         <div class="mini-news-item__title">
                                             <?php if (($novost->status) == 1): ?>
                                             <div class="mini-news-item__title warning-news">
