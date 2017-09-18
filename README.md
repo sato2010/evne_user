@@ -30,7 +30,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist budyaga/yii2-users "*"
+composer require sato2010/evne_user
 ```
 
 or add
