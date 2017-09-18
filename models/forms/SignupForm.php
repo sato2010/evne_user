@@ -2,6 +2,7 @@
 namespace budyaga\users\models\forms;
 
 use budyaga\users\models\User;
+// use common\models\User;
 use yii\base\Model;
 use Yii;
 
@@ -16,6 +17,11 @@ class SignupForm extends Model
     public $password_repeat;
     public $sex;
     public $photo;
+    public $phone;
+    public $description;
+    public $kurs;
+    public $about;
+    public $user_files;
 
     /**
      * @inheritdoc
@@ -38,6 +44,11 @@ class SignupForm extends Model
             [['password', 'password_repeat'], 'required'],
             [['password', 'password_repeat'], 'string', 'min' => 6],
             ['password_repeat', 'compare', 'compareAttribute' => 'password'],
+            ['phone', 'string', 'max' => 255],
+            [['description'], 'file', 'extensions' => 'pdf, doc, png, jpg, jpeg', 'maxFiles' => 4],
+            ['kurs', 'string', 'max' => 255],
+            ['about', 'string', 'max' => 255],
+            [['user_files'], 'file', 'maxSize' => 1024 * 1024 * 3, 'extensions' => 'pdf, doc, docx'],
         ];
     }
 
@@ -45,12 +56,16 @@ class SignupForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('users', 'USERNAME'),
-            'email' => Yii::t('users', 'EMAIL'),
-            'sex' => Yii::t('users', 'SEX'),
-            'password' => Yii::t('users', 'PASSWORD'),
-            'password_repeat' => Yii::t('users', 'PASSWORD_REPEAT'),
-            'photo' => Yii::t('users', 'PHOTO'),
+            'username' => Yii::t('users', 'Имя и фамилия'),
+            'email' => Yii::t('users', 'Эл. почта'),
+            'sex' => Yii::t('users', 'Пол'),
+            'password' => Yii::t('users', 'Пароль'),
+            'password_repeat' => Yii::t('users', 'Повторите пароль'),
+            'photo' => Yii::t('users', 'Фото'),
+            'phone' => Yii::t('users', 'Телефон'),
+            'description' => Yii::t('users', 'Примеры работ'),
+            'kurs' => Yii::t('users', 'Где Вы хотите учиться?'),
+            'about' => Yii::t('users', 'Расскажите немного о себе')
         ];
     }
 
@@ -71,7 +86,6 @@ class SignupForm extends Model
                 return $user;
             }
         }
-
         return null;
     }
 

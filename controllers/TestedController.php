@@ -1,14 +1,13 @@
-<?php
-
+<?
 namespace budyaga\users\controllers;
 
 use budyaga\users\models\User;
 use budyaga\users\models\UserOauthKey;
 use Yii;
 
-class AuthController extends \yii\web\Controller
+class TestedController extends \yii\web\Controller 
 {
-    public function beforeAction($action)
+	public function beforeAction($action)
     {
         if ($action->id == 'index' && Yii::$app->request->referrer !== null) {
             Yii::$app->session->set('returnUrl', Yii::$app->request->referrer);
@@ -16,7 +15,7 @@ class AuthController extends \yii\web\Controller
         return parent::beforeAction($action);
     }
 
-    public function actions()
+	public function actions()
     {
         return [
             'index' => [
@@ -26,7 +25,7 @@ class AuthController extends \yii\web\Controller
         ];
     }
 
-    public function successCallback($client)
+	public function successCallback($client)
     {
         $attributes = $client->userAttributes;
 
@@ -48,8 +47,6 @@ class AuthController extends \yii\web\Controller
             }
         } else {
             if (Yii::$app->user->isGuest) {
-                Yii::$app->session->setFlash('error', 'Для входа через социальную сеть, добавьте ее в своем личном кабинете.');
-                return false;
                 $user = false;
                 if ($attributes['User']['email'] != null) {
                     $user = User::findByEmailOrUserName($attributes['User']['email']);
@@ -74,7 +71,6 @@ class AuthController extends \yii\web\Controller
             }
         }
     }
-    
 
     public function actionUnbind($id)
     {

@@ -58,8 +58,8 @@ class ResetPasswordForm extends Model
     public function attributeLabels()
     {
         return [
-            'password' => Yii::t('users', 'NEW_PASSWORD'),
-            'password_repeat' => Yii::t('users', 'NEW_PASSWORD_REPEAT'),
+            'password' => Yii::t('users', 'Новый пароль'),
+            'password_repeat' => Yii::t('users', 'Повторите новый пароль'),
         ];
     }
 

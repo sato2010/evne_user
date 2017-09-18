@@ -9,6 +9,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
 
+
 /**
  * User model
  *
@@ -24,6 +25,9 @@ use yii\helpers\ArrayHelper;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $phone
+ * @property string $description
+ * @property string $kurs
 */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -33,6 +37,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     const SEX_MALE = 1;
     const SEX_FEMALE = 2;
+
+    public $password;
 
     public function getDefaultPhoto()
     {
@@ -72,12 +78,21 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['email'], 'required', 'except' => ['oauth']],
             [['username'], 'required'],
-            [['username', 'photo', 'email', 'auth_key', 'password_hash'], 'string', 'max' => 255],
-            [['created_at', 'updated_at', 'status', 'sex'], 'integer'],
+            [['password'], 'required', 'on' => ['add']],
+            [['username', 'about', 'photo', 'email', 'auth_key', 'password_hash', 'phone', 'description', 'kurs'], 'string', 'max' => 255],
+            [['created_at', 'updated_at', 'status', 'sex', 'teacher'], 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_NEW, self::STATUS_ACTIVE, self::STATUS_BLOCKED]],
-            ['sex', 'in', 'range' => [self::SEX_MALE, self::SEX_FEMALE]]
+            ['sex', 'in', 'range' => [self::SEX_MALE, self::SEX_FEMALE]],
+            [['description'], 'file', 'extensions' => 'pdf, doc, png, jpg, jpeg', 'checkExtensionByMimeType' => false]
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['add'] = ['username', 'about', 'photo', 'email', 'auth_key', 'password_hash', 'phone', 'description', 'kurs', 'password', 'created_at', 'updated_at', 'status', 'sex', 'description', 'teacher'];
+        return $scenarios;
     }
 
     /**
@@ -97,13 +112,18 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => Yii::t('users', 'USERNAME'),
+            'username' => Yii::t('users', 'Имя'),
             'photo' => Yii::t('users', 'PHOTO'),
             'email' => Yii::t('users', 'EMAIL'),
             'sex' => Yii::t('users', 'SEX'),
             'status' => Yii::t('users', 'STATUS'),
             'created_at' => Yii::t('users', 'CREATED_AT'),
             'updated_at' => Yii::t('users', 'UPDATED_AT'),
+            'phone' => Yii::t('users', 'Телефон'),
+            'description' => Yii::t('users', 'Резюме'),
+            'kurs' => Yii::t('users', 'KURS'),
+            'about' => Yii::t('users', 'About'),
+
         ];
     }
 

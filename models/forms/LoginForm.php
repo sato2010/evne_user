@@ -26,6 +26,7 @@ class LoginForm extends Model
             [['email', 'password'], 'required'],
             ['rememberMe', 'boolean'],
             ['password', 'validatePassword'],
+            [['email'], 'email'],
         ];
     }
 
@@ -49,9 +50,9 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'email' => Yii::t('users', 'EMAIL_OR_USERNAME'),
-            'password' => Yii::t('users', 'PASSWORD'),
-            'rememberMe' => Yii::t('users', 'REMEMBER_ME'),
+            'email' => Yii::t('users', 'Эл. почта или имя'),
+            'password' => Yii::t('users', 'Пароль'),
+            'rememberMe' => Yii::t('users', 'Запомнить меня'),
         ];
     }
     /**

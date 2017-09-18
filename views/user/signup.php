@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin(['id' => 'form-profile']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'form-profile'], ['enctype' => 'multipart/form-data']); ?>
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
@@ -29,9 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-xs-12 col-md-6">
             <div><?= $form->field($model, 'username') ?></div>
             <div><?= $form->field($model, 'email')->input('email') ?></div>
-            <div><?= $form->field($model, 'sex')->dropDownList(User::getSexArray())?></div>
+<!--            <div>--><?//= $form->field($model, 'sex')->dropDownList(User::getSexArray())?><!--</div>-->
             <div><?= $form->field($model, 'password')->passwordInput() ?></div>
             <div><?= $form->field($model, 'password_repeat')->passwordInput() ?></div>
+            <div><?= $form->field($model, 'phone')->textInput() ?></div>
+            <div><?= $form->field($model, 'about')->textarea() ?></div>
+            <div><?= $form->field($model, 'description')->fileInput() ?></div>
+            <div><?= $form->field($model, 'kurs')->dropDownList(\yii\helpers\ArrayHelper::map($kurs, 'id_kurs', 'kursname')) ?></div>
+
         </div>
     </div>
 

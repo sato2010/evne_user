@@ -46,6 +46,30 @@ $assets = UsersAsset::register($this);
             ],
             'created_at:datetime',
             'updated_at:datetime',
+            'about',
+            'phone',
+//            'description',
+           [    'attribute' => 'description',
+                'value' => function($row) use ($resume) {
+                    $uploadDir = Yii::getAlias('@frontend/web');
+
+                   $links = '<ul>';
+                   foreach ($resume as $file) {
+                      $links .= '<li>'.Html::a($file->link, $file->link).'</li>';
+
+
+                   }
+                   return $links.'</ul>';
+                },
+               'format' => 'raw'
+            ],
+            'kurs',
+            [
+                'attribute' => 'teacher',
+                'value' => function($row) {
+                    return $row->teacher == 1 ? 'Да' : 'Нет';
+                }
+            ]
         ],
     ]) ?>
 

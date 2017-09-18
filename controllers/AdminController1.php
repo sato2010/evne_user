@@ -121,90 +121,37 @@ class AdminController extends Controller
                 // send mail to user 
                 if($model->teacher == 1) {
                     // send to teacher
-                    /*mail($model->email, 'Вас назначили преподавателем', "
+                    mail($model->email, 'Вас назначили преподавателем', "
                         <h3>Вас назначили преподавателем</h3>
 
-                        <p>Для входа перейдите в <a href=\"/admin\">кабинет</a></p>
+                        <p>Для входа перейлите в <a href=\"http://academy.evne.pro/admin\">кабинет</a></p>
 
                         <ul>
                         <li>Ваша почта - {$model->email}</li>
                         <li>Ваш пароль - {$model->password}</li>
                         </ul>
-                    ", $headers);*/
-                    Yii::$app->mailer->compose()
-                        ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
-                        ->setTo($model->email)
-                        ->setSubject('Вас назначили преподавателем')
-                        ->setTextBody("
-                            Вас назначили преподавателем.
-                            Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/admin'>кабинет</a>
-                            Ваша почта - {$model->email}
-                            Ваш пароль - {$model->password}
-                        ")
-                        ->setHtmlBody("
-                            <h3>Вас назначили преподавателем</h3>
-                            <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/admin'>кабинет</a></p>
-                            <ul>
-                            <li>Ваша почта - {$model->email}</li>
-                            <li>Ваш пароль - {$model->password}</li>
-                            </ul>
-                        ")
-                        ->send();
+                    ", $headers);
                 }
                 else {
                     switch ($model->status) {
                         case 1:
-                            /*mail($model->email, 'Заявка на запись', "
+                            mail($model->email, 'Заявка на запись', "
                                 <h3>Вы подали заявку на запись в студенты академии</h3>
 
                                 <p>Ожидайте подтверждения от администрации.</p>
-                            ", $headers);*/
-                            Yii::$app->mailer->compose()
-                                ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
-                                ->setTo($model->email)
-                                ->setSubject('Заявка на запись')
-                                ->setTextBody("
-                                    <h3>Вы подали заявку на запись в студенты академии</h3>
-                                    <p>Ожидайте подтверждения от администрации.</p>
-                                ")
-                                ->setHtmlBody("
-                                    <h3>Вы подали заявку на запись в студенты академии</h3>
-                                    <p>Ожидайте подтверждения от администрации.</p>
-                                ")
-                                ->send();
+                            ", $headers);
                             break;
                         case 2:
-                            /*mail($model->email, 'Вас добавили в студенты', "
+                            mail($model->email, 'Вас добавили в студенты', "
                                 <h3>Вас добавили в студенты</h3>
 
-                                <p>Для входа перейдите в <a href=\"/profile\">кабинет</a></p>
+                                <p>Для входа перейлите в <a href=\"http://academy.evne.pro/profile\">кабинет</a></p>
 
                                 <ul>
                                 <li>Ваша почта - {$model->email}</li>
                                 <li>Ваш пароль - <i>указан при регистрации</i></li>
                                 </ul>
-                            ", $headers);*/
-                            Yii::$app->mailer->compose()
-                                ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
-                                ->setTo($model->email)
-                                ->setSubject('Вас добавили в студенты')
-                                ->setTextBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
-                                ")
-                                ->setHtmlBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
-                                ")
-                                ->send();
+                            ", $headers);
                             $zapis = new \backend\models\Zapis;
                             $zapis->id_student = $model->id;
                             $zapis->id_kursa = $model->kurs;
@@ -269,57 +216,23 @@ class AdminController extends Controller
                 if($action !== false) {
                     switch ($action) {
                         case 1:
-                            /*mail($model->email, 'Заявка на запись', "
+                            mail($model->email, 'Заявка на запись', "
                                 <h3>Вы подали заявку на запись в студенты академии</h3>
 
                                 <p>Ожидайте подтверждения от администрации.</p>
-                            ", $headers);*/
-                            Yii::$app->mailer->compose()
-                                ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
-                                ->setTo($model->email)
-                                ->setSubject('Заявка на запись')
-                                ->setTextBody("
-                                    <h3>Вы подали заявку на запись в студенты академии</h3>
-                                    <p>Ожидайте подтверждения от администрации.</p>
-                                ")
-                                ->setHtmlBody("
-                                    <h3>Вы подали заявку на запись в студенты академии</h3>
-                                    <p>Ожидайте подтверждения от администрации.</p>
-                                ")
-                                ->send();
+                            ", $headers);
                             break;
                         case 2:
-                            /*mail($model->email, 'Вас добавили в студенты', "
+                            mail($model->email, 'Вас добавили в студенты', "
                                 <h3>Вас добавили в студенты</h3>
 
-                                <p>Для входа перейдите в <a href=\"/profile\">кабинет</a></p>
+                                <p>Для входа перейлите в <a href=\"http://academy.evne.pro/profile\">кабинет</a></p>
 
                                 <ul>
                                 <li>Ваша почта - {$model->email}</li>
                                 <li>Ваш пароль - <i>указан при регистрации</i></li>
                                 </ul>
-                            ", $headers);*/
-                            Yii::$app->mailer->compose()
-                                ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
-                                ->setTo($model->email)
-                                ->setSubject('Вас добавили в студенты')
-                                ->setTextBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
-                                ")
-                                ->setHtmlBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
-                                ")
-                                ->send();
+                            ", $headers);
                             if(!\backend\models\Zapis::find()->where(['id_student' => $model->id])->andWhere(['id_kursa' => $model->kurs])->one()) {
                                 $zapis = new \backend\models\Zapis;
                                 $zapis->id_student = $model->id;

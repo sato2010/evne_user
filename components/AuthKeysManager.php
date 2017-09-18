@@ -26,6 +26,7 @@ class AuthKeysManager extends AuthChoice
      */
     public function clientLink($client, $text = null, array $htmlOptions = [])
     {
+        echo Html::beginTag('div', ['class' => 'row']);
         echo Html::beginTag('div', ['class' => 'col-xs-6']);
         $exists = UserOauthKey::findOne(['user_id' => Yii::$app->user->id, 'provider_id' => UserOauthKey::getAvailableClients()[$client->getId()]]);
         if ($exists) {
@@ -43,6 +44,7 @@ class AuthKeysManager extends AuthChoice
             $button = Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="hidden-md">' . Yii::t('users', 'ADD') . '</span>', $this->createClientUrl($client), $htmlOptions);
         }
         echo Html::tag('span', $button, ['class' => 'auth-icon ' . $client->getName(), 'style' => 'padding-left: 40px; margin-bottom: 10px;']);
+        echo Html::endTag('div');
         echo Html::endTag('div');
     }
 

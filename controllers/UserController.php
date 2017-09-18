@@ -10,6 +10,9 @@ use budyaga\users\models\forms\LoginForm;
 use budyaga\users\models\forms\PasswordResetRequestForm;
 use budyaga\users\models\forms\ResetPasswordForm;
 use budyaga\users\models\forms\SignupForm;
+use backend\models\Kurs;
+use common\models\User;
+use backend\models\Zapis;
 use Yii;
 use yii\helpers\Url;
 use yii\base\InvalidParamException;
@@ -71,8 +74,9 @@ class UserController extends \yii\web\Controller
             }
         }
 
-        return $this->render($this->module->getCustomView('signup'), [
+        return $this->render($this->module->getCustomView('_signup'), [
             'model' => $model,
+            'kurs' => Kurs::find()->all(),
         ]);
     }
 
@@ -131,8 +135,13 @@ class UserController extends \yii\web\Controller
     public function actionProfile()
     {
         $model = Yii::$app->user->identity;
+        if(!$model){
+            return $this->redirect(Url::toRoute('/'));
+        }
         $changePasswordForm = new ChangePasswordForm;
         $changeEmailForm = new ChangeEmailForm;
+
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('users', 'CHANGES_WERE_SAVED'));

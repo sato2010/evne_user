@@ -12,6 +12,7 @@ use Yii;
 class PasswordResetRequestForm extends Model
 {
     public $email;
+    public $reCaptcha;
 
     private $_user = false;
 
@@ -29,6 +30,7 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => Yii::t('users', 'USER_WITH_SUCH_EMAIL_DO_NOT_EXISTS')
             ],
+            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(), 'secret' => '6Le9_CwUAAAAAGLAuIt5Bo45oQHV2hN1tafEB4jN', 'uncheckedMessage' => 'Необходимо подтвердить.']
         ];
     }
 

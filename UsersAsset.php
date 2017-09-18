@@ -1,5 +1,5 @@
 <?php
-//1111
+
 namespace budyaga\users;
 
 use yii\web\AssetBundle;

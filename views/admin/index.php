@@ -7,12 +7,14 @@ use budyaga\users\models\User;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('users', 'USERS');
+// $this->title = Yii::t('users', 'USERS');
+$this->title = 'Запись';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="user-index table-responsive">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
+    <h1>Запись</h1>
 
     <p>
         <?= (Yii::$app->user->can('userCreate')) ? Html::a(Yii::t('users', 'CREATE'), ['create'], ['class' => 'btn btn-success']) : ''?>
