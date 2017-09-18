@@ -36,7 +36,7 @@ composer require sato2010/evne_user
 or add
 
 ```
-"budyaga/yii2-users": "*"
+"sato2010/evne_user": "^1.0"
 ```
 
 to the require section of your `composer.json` file.
