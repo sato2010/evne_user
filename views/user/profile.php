@@ -69,6 +69,22 @@ $(document).on('click', 'span.file-close', function (e) {
     $('input[type=file]').val('');
     $('.progress').hide();
     $('#help-error-file').text('');
+    var data = $('#form-request-zadanie').data("yiiActiveForm");
+    data.attributes[2].validate = 
+    function (attribute, value, messages, deferred, form) {
+        yii.validation.required(value, messages, {"message":"Необходимо заполнить «Файлы»."});
+        yii.validation.file(attribute, messages, {
+            "message":"Загрузка файла не удалась.",
+            "skipOnEmpty":false,
+            "uploadRequired":"Загрузите файл.",
+            "mimeTypes":[],
+            "wrongMimeType":"Разрешена загрузка файлов только со следующими MIME-типами1: .",
+            "extensions":["pdf","doc","docx","png","jpg","jpeg","zip","rar","tar.gz","psd","scatch"],
+            "wrongExtension":"Разрешена загрузка файлов только со следующими расширениями: pdf, doc, docx, png, jpg, jpeg, zip, rar, tar.gz, psd, scatch.",
+            "maxSize":314572800,
+            "tooBig":"Файл «{file}» слишком большой. Размер не должен превышать 300 МиБ.","maxFiles":4,"tooMany":"Вы не можете загружать более 4 файлов."
+        });
+    }
 });
 
 $(document).on('beforeSubmit', '#form-request-zadanie', function (e) {
@@ -121,20 +137,22 @@ $(document).on('beforeSubmit', '#form-request-zadanie', function (e) {
       },
       success: function(json){
         if(json){
-          $('.content.sendRequestZadanieForm').html('');
+          $('.content.sendRequestZadanieForm').toggle();
+          $(document).find('a.send-request-data').hide();
           $.ajax({
             url: '/gethistory',
             type: 'POST',
             dataType: 'json',
             data: {id: idc},
             success: function(data) {
+                $(document).find('.span-label-' + idc).hide(); 
                 if(data.status == true) {
                     $('.send-request-data').hide();
                     $('.historyLog').removeClass('loading').removeClass('nf').find('.data').html(data.html);
                 }
                 else {
-                    $('.send-request-data').show();
-                    $('.historyLog').removeClass('loading').addClass('nf').find('.data').html('');
+                    //$('.send-request-data').show();
+                    $('.historyLog').removeClass('loading').removeClass('nf').find('.data').html(data.html);
                 }
             }
         });
@@ -225,10 +243,11 @@ $this->registerJs($js, \yii\web\View::POS_END);
                                                 <span class="date"><?=  Yii::$app->formatter->asDate(strtotime($zadanie->date)); ?></span>
                                                 <div class="task-item_heading"><h4><?= Html::encode($zadanie->name_zadanie)  ?></h4>
 
-                                                        <span class="label"><?=\frontend\models\RequestZadanie::getStatus($zadanie->id)?></span>
+                                                        <?=\frontend\models\RequestZadanie::getStatus($zadanie->id)?>
 
                                                     <!-- /.label --></div>
                                                 <p class="desc"><?= Html::encode($zadanie->description) ?> </p>
+
                                                 <!-- /.desc -->
                                                 <a data-id="<?= $zadanie->id ?>" href="#" class="user-page__more-link view-detail"><span class="arrow"></span>Подробнее</a>
 
@@ -236,6 +255,12 @@ $this->registerJs($js, \yii\web\View::POS_END);
                                                     <div class="date-out"><?=  Yii::$app->formatter->asDate(strtotime($zadanie->date_out)); ?></div>
                                                     <div class="date"><?=  Yii::$app->formatter->asDate(strtotime($zadanie->date)); ?></div>
                                                     <div class="text"><?= ($zadanie->full_text) ?></div>
+                                                    <div class="file-link-hide">
+                                                    <?php if(!empty($zadanie->text_zadanie)) : ?>
+                                                    <?php echo '<a target="_blank" href="' . $zadanie->text_zadanie . '" class="download-link">Скачать<span class="arrow"></span></a>';?>
+                                                    <?php endif; ?>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         <? endforeach; ?>
@@ -260,6 +285,7 @@ $this->registerJs($js, \yii\web\View::POS_END);
                                             <div class="user-page__task-item">
                                                 <span class="date create-date"></span>
                                                 <div class="text"></div>
+                                                <div class="file-text"></div>
                                             </div>
                                         </article>
                                         <p><a data-id="0" style="padding: 10px; display: inline-block; text-align: center;margin-top: 25px;" href="#send-request" class="btn-default send-request-data">Сдать задание</a></p>
@@ -364,24 +390,19 @@ $this->registerJs($js, \yii\web\View::POS_END);
                                         <p class="desc"><?= ($material->description) ?> </p>
                                         <!-- /.desc -->
                                         <? if (!empty($material->description)):?>
-                                            <a class="user-page__more-link view-detail-material" style="cursor:pointer"><span class="arrow"></span>Подробнее</a>
+                                            <a data-id="<?=$material->id?>" class="user-page__more-link view-detail-material" style="cursor:pointer"><span class="arrow"></span>Подробнее</a>
                                             <div class="hide">
                                                 <div class="date-out"><?=  Yii::$app->formatter->asDate(strtotime($material->date)); ?></div>
                                                 <div class="date"><?=  Yii::$app->formatter->asDate(strtotime($material->date)); ?></div>
                                                 <div class="text"><?= ($material->full_text) ?></div>
+                                                <div class="file-link-hide">
+                                                    <? if (!empty($material->file_name)): ?>
+                                                        <p><span class="file-link"><i></i><?= Html::encode($material->file_name) ?></span></p>
+                                                        <?php echo '<a target="_blank" href="/files/material/' . $material->files . '" class="download-link">Скачать<span class="arrow"></span></a>';?>
+                                                    <? endif; ?>
+                                                </div>
                                             </div>
                                         <? endif;?>
-
-                                        <? if (!empty($material->file_name)): ?>
-                                        <p><span class="file-link"><i></i><?= Html::encode($material->file_name) ?></span></p>
-
-                                        <?php echo '<a target="_blank" href="/files/material/' . $material->files . '" class="download-link">Скачать<span class="arrow"></span></a>';?>
-                                        <!-- /.desc -->
-
-
-                                        <? else: ?>
-                                        <? endif; ?>
-
                                     </div>
 
                                     <?endforeach;?>
@@ -400,6 +421,7 @@ $this->registerJs($js, \yii\web\View::POS_END);
                                             <div class="user-page__task-item">
                                                 <span class="date create-date"></span>
                                                 <div class="text"></div>
+                                                <div class="file-text"></div>
                                             </div>
                                         </article>
                                     </div>

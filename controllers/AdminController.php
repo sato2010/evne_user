@@ -7,6 +7,8 @@ use budyaga\users\models\User;
 use backend\models\Kurs;
 use backend\models\UserFiles;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -184,26 +186,26 @@ class AdminController extends Controller
                                 <li>Ваш пароль - <i>указан при регистрации</i></li>
                                 </ul>
                             ", $headers);*/
+                            $urlSheme = isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https';
+                            $html = "<h3>Вас добавили в студенты</h3>
+                                    <p>Для входа перейдите в " . Html::a('кабинет', Url::to($urlSheme . '://' . $_SERVER["SERVER_NAME"] . '/profile' )) . "</p>
+                                    <ul>
+                                        <li>Ваша почта - {$model->email}</li>
+                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
+                                    </ul>";
                             Yii::$app->mailer->compose()
                                 ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
                                 ->setTo($model->email)
                                 ->setSubject('Вас добавили в студенты')
-                                ->setTextBody("
+                                ->setTextBody('
                                     <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
+                                    <p>Для входа перейдите в <a href="'.$_SERVER["SERVER_NAME"].'/profile">кабинет</a></p>
                                     <ul>
                                         <li>Ваша почта - {$model->email}</li>
                                         <li>Ваш пароль - <i>указан при регистрации</i></li>
                                     </ul>
-                                ")
-                                ->setHtmlBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
-                                ")
+                                ')
+                                ->setHtmlBody($html)
                                 ->send();
                             $zapis = new \backend\models\Zapis;
                             $zapis->id_student = $model->id;
@@ -299,26 +301,26 @@ class AdminController extends Controller
                                 <li>Ваш пароль - <i>указан при регистрации</i></li>
                                 </ul>
                             ", $headers);*/
+                            $urlSheme = isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https';
+                            $html = "<h3>Вас добавили в студенты</h3>
+                                    <p>Для входа перейдите в " . Html::a('кабинет', Url::to($urlSheme . '://' . $_SERVER["SERVER_NAME"] . '/profile' )) . "</p>
+                                    <ul>
+                                        <li>Ваша почта - {$model->email}</li>
+                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
+                                    </ul>";
                             Yii::$app->mailer->compose()
                                 ->setFrom(['admin@evnedev.com' => 'EVNE Academy'])
                                 ->setTo($model->email)
                                 ->setSubject('Вас добавили в студенты')
                                 ->setTextBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
+                                    Вас добавили в студенты
+                                    перейдите в кабинет ". $_SERVER['REQUEST_SCHEME'] . $_SERVER["SERVER_NAME"] ."/profile
+                                    
+                                        Ваша почта - {$model->email}
+                                        Ваш пароль - указан при регистрации
+                                    
                                 ")
-                                ->setHtmlBody("
-                                    <h3>Вас добавили в студенты</h3>
-                                    <p>Для входа перейдите в <a href='".$_SERVER["SERVER_NAME"]."/profile'>кабинет</a></p>
-                                    <ul>
-                                        <li>Ваша почта - {$model->email}</li>
-                                        <li>Ваш пароль - <i>указан при регистрации</i></li>
-                                    </ul>
-                                ")
+                                ->setHtmlBody($html)
                                 ->send();
                             if(!\backend\models\Zapis::find()->where(['id_student' => $model->id])->andWhere(['id_kursa' => $model->kurs])->one()) {
                                 $zapis = new \backend\models\Zapis;
