@@ -1,6 +1,7 @@
 <?php
 namespace budyaga\users\models\forms;
 
+use common\models\UserEvne;
 use Yii;
 use yii\base\Model;
 use budyaga\users\models\User;
@@ -41,8 +42,13 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+
+            if(isset($user) && $user->status == User::STATUS_NEW ){
+                $this->addError($attribute, 'Ваш аккаунт не активирован.');
+            }
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Неверно указан логин или пароль.');
+
             }
         }
     }
@@ -78,6 +84,10 @@ class LoginForm extends Model
     {
         if ($this->_user === false) {
             $this->_user = User::findByEmailOrUserName($this->email);
+        }
+
+        if ($this->_user === false || is_null($this->_user)) {
+            $this->_user = UserEvne::findByStatusNew($this->email);
         }
 
         return $this->_user;

@@ -63,7 +63,14 @@ $assets = UsersAsset::register($this);
                 },
                'format' => 'raw'
             ],
-            'kurs',
+            [
+                'attribute' => 'kurs',
+                'label' => 'Курс',
+                'value' => function($row) {
+                    $kurs = \backend\models\Kurs::findOne($row->kurs);
+                    return isset($kurs) ? $kurs->kursname : '' ;
+                }
+            ],
             [
                 'attribute' => 'teacher',
                 'value' => function($row) {
